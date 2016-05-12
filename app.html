@@ -1,0 +1,1188 @@
+#set($D = "$")##
+#set($_mDot = false)##
+#set($mDotParam = "")##
+#if(($req.param("ua") && $req.param("ua") != "") || ($req.param("dc") && $req.param("dc") != "") || ($req.param("ipad") && $req.param("ipad") != ""))##
+#*    *###set($_mDot = true)##
+#*    *###set($mDotParam = "?mdot=y")##
+#end##
+<!doctype html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>MJS Traffic</title>
+<meta name="apple-touch-fullscreen" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+<meta name="viewport" id="vp" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" />
+
+<meta name="viewport" id="vp" content="initial-scale=1.0,user-scalable=no,maximum-scale=1" media="(device-height: 568px)" />
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+
+<link rel="apple-touch-icon-precomposed" href="http://graphics.jsonline.com/jsi_news/apps/traffic/img/jst-57.png" />
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://graphics.jsonline.com/jsi_news/apps/traffic/img/jst-72.png" />
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://graphics.jsonline.com/jsi_news/apps/traffic/img/jst-114.png" />
+
+<link href="http://graphics.jsonline.com/jsi_news/apps/traffic/img/jst-nl-iphone.png" media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 1)" rel="apple-touch-startup-image">
+
+<link href="http://graphics.jsonline.com/jsi_news/apps/traffic/img/jst-nl-retina.png" media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+
+<link href="http://graphics.jsonline.com/jsi_news/apps/traffic/img/jst-nl-retina-1096.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+
+
+<script type="text/javascript" src="http://www.jsonline.com/includes/jquery.js"></script>
+
+
+<script src="http://graphics.jsonline.com/jsi_news/javascripts/backbone/underscore.js" type="text/javascript"> </script>
+<script src="http://graphics.jsonline.com/jsi_news/javascripts/backbone/backbone.min.js" type="text/javascript"> </script>
+<script src="http://graphics.jsonline.com/jsi_news/javascripts/backbone/backbone-query.min.js" type="text/javascript"> </script>
+
+
+<script src="http://graphics.jsonline.com/jsi_news/javascripts/helpers/datalab.helpers.js?v2" type="text/javascript"> </script>
+
+
+<script src="http://graphics.jsonline.com/jsi_news/javascripts/templating/ich.min.js" type="text/javascript"></script>
+
+
+<link href="http://graphics.jsonline.com/jsi_news/webfonts/amaranth/amaranth.css" rel="stylesheet" type="text/css" />
+<link href="http://graphics.jsonline.com/jsi_news/webfonts/portland/portland.css" rel="stylesheet" type="text/css" />
+<link href="http://graphics.jsonline.com/jsi_news/webfonts/symbolset-social/ss-social.css" rel="stylesheet" type="text/css" />
+<link href="http://graphics.jsonline.com/jsi_news/webfonts/symbolset/symbolset.std.css" rel="stylesheet" type="text/css" />
+<script src="http://graphics.jsonline.com/jsi_news/webfonts/symbolset/ss-standard.js" type="text/javascript"></script>
+
+
+<script src="http://graphics.jsonline.com/jsi_news/javascripts/spin/spin.min.js" type="text/javascript"></script>
+<script src="http://graphics.jsonline.com/jsi_news/javascripts/spin/jquery.spin.js" type="text/javascript"></script>
+
+
+<!-- Imports for pop-ups. -->
+<link type="text/css" rel="stylesheet" href="http://www.jsonline.com/includes/jquery.fancybox-2.0.6.css?v=5&d=380719"/>
+<script type="text/javascript" src="http://www.jsonline.com/includes/jquery.fancybox-2.0.6.js?v=5&d=380719"></script>
+
+
+<script src="http://graphics.jsonline.com/jsi_news/dev/jquery.plugin.pullToRefresh.js" type="text/javascript"></script>
+<link href="http://graphics.jsonline.com/jsi_news/dev/pull-to-refresh.css" rel="stylesheet" type="text/css" />
+
+
+<link href="http://graphics.jsonline.com/jsi_news/javascripts/add2home/add2home.css" rel="stylesheet" type="text/css" />
+<script src="http://graphics.jsonline.com/jsi_news/javascripts/add2home/add2home.js" type="application/javascript"></script>
+
+<script src="http://graphics.jsonline.com/jsi_news/javascripts/fitText/jquery.fittext.js" type="application/javascript"></script>
+
+
+<script type="text/javascript">
+    (function (${D}, F) {
+        F.transitions.dropIn = function() {
+            var endPos = F._getPosition(true);
+
+            endPos.top = (parseInt(endPos.top, 10) - 200) + 'px';
+
+            F.wrap.css(endPos).show().animate({
+                top: '+=200px'
+            }, {
+                duration: F.current.openSpeed,
+                complete: F._afterZoomIn
+            });
+        };
+
+        F.transitions.dropOut = function() {
+            F.wrap.removeClass('fancybox-opened').animate({
+                top: '-=200px'
+            }, {
+                duration: F.current.closeSpeed,
+                complete: F._afterZoomOut
+            });
+        };
+    }(jQuery, jQuery.fancybox));
+</script>
+
+
+<style type="text/css">
+    body {
+        background: #FFFFFF;
+    }
+
+    #loading-screen {
+        background-color: #064199;
+        height: 85%;
+        margin-top: 27%;
+        text-align: center;
+        width: 100%;
+    }
+    #loading-screen p {
+        /*margin: 0.4em;*/
+        text-transform: uppercase;
+    }
+    #loading-screen .js {
+        background-color: #F8F8F8;
+        color: #064199;
+        font-weight: bold;
+        margin: 0;
+        padding: 0.1em 0 0.05em;
+    }
+    #loading-screen .traffic-area {
+        background-color: #064199;
+    }
+    #loading-screen .traffic-area .traffic {
+        color: #FFFFFF;
+        margin: 0;
+        padding-top: 0.05em;
+    }
+    #loading-screen img {
+        max-width: 450px;
+        width: 90%;
+    }
+
+    #traffic-outer #page-titlebar #mjs {
+        display: block;
+    }
+    #traffic-outer #page-titlebar #mjs img {
+        margin-bottom: 0px;
+        margin-top: -2px;
+        max-width: 186px;
+        width: 54%;
+    }
+
+    #traffic-outer #page-titlebar #actual-title img {
+        margin-bottom: -1px;
+        max-width: 160px;
+        width: 51%;
+    }
+
+    .traffic-widget {
+        background: #F8F8F8;
+        border: 1px solid;
+        border-color: #CCCCCC #DDDDDD;
+        margin-top: 10px;
+        position: relative;
+        width: 660px;
+    }
+
+    /*.traffic-widget:before {
+        background: linear-gradient(-45deg, #F8F8F8 16%, #BBBBBB 25%, transparent 25%) 0 100%,
+                    linear-gradient( 45deg, #F8F8F8 19%, #CCCCCC 25%, transparent 25%) 0 100%;
+        background: -webkit-linear-gradient(135deg, #F8F8F8 16%, #BBBBBB 25%, transparent 25%) 0 100%,
+                    -webkit-linear-gradient(45deg, #F8F8F8 19%, #CCCCCC 25%, transparent 25%) 0 100%;
+        background-repeat: repeat-x;
+        background-size: 12px 12px;
+        border-left: 1px solid #DDDDDD;
+        border-right: 1px solid #DDDDDD;
+        content: " ";
+        display: block;
+        height: 5px;
+        margin-bottom: 0px;
+        margin-left: -1px;
+        margin-right: -1px;
+        position: relative;
+        top: -5px;
+    }
+
+    .traffic-widget:after {
+        background: linear-gradient(-45deg, transparent 75%, #CCCCCC 75%, #F8F8F8 81%) 0 0,
+                    linear-gradient( 45deg, transparent 75%, #CCCCCC 75%, #F8F8F8 86%) 0 0;
+        background: -webkit-linear-gradient(135deg, transparent 75%, #CCCCCC 75%, #F8F8F8 81%) 0 0,
+                    -webkit-linear-gradient(45deg, transparent 75%, #CCCCCC 75%, #F8F8F8 86%) 0 0;
+        background-repeat: repeat-x;
+        background-size: 12px 12px;
+        border-left: 1px solid #DDDDDD;
+        border-right: 1px solid #DDDDDD;
+        bottom: -5px;
+        content: " ";
+        display:block;
+        height: 5px;
+        margin-left: -1px;
+        margin-right: -1px;
+        position: relative;
+    }*/
+
+    .traffic-widget .inner {
+        background-color: #ECECEC;
+        padding: 0 0 10px;
+    }
+
+    .traffic-widget .inner .updatestamp-holder {
+        background-color: #F8F8F8;
+        color: #606060;
+        font-family: "Amaranth", Helvetica, sans-serif;
+        font-size: 12px;
+        margin-top: 0;
+        padding-bottom: 7px;
+        padding-top: 7px;
+        text-align: center;
+        text-transform: uppercase;
+        width: 100%;
+    }
+    .traffic-widget .inner .updatestamp-holder p {
+        margin: 0;
+    }
+
+    .traffic-widget .inner .feed-error-holder {
+        background: #F8F8F8;
+        padding: 0 3px 6px;
+    }
+    .traffic-widget .inner .feed-error-holder p {
+        border: 1px solid;
+        color: #AC4136;
+        font-size: 13px;
+        line-height: 13px;
+        margin: 0;
+        padding: 5px 1px;
+        text-align: center;
+    }
+    .traffic-widget .inner .feed-error-holder p .ss-alert {
+        vertical-align: text-bottom;
+    }
+    .traffic-widget .inner .feed-error-holder p .alert-message {
+        font-family: "Amaranth", Helvetica, sans-serif;
+        font-size: 13px;
+        text-transform: uppercase;
+    }
+    .traffic-widget .inner .feed-error-holder p .alert-message a {
+        color: #AC4136;
+        font-weight: bold;
+        text-decoration: none;
+    }
+    .traffic-widget .inner .feed-error-holder p .alert-message a:hover {
+        text-decoration: underline;
+    }
+
+    .traffic-widget .inner .traffic-alerts {
+        display: none;
+        margin: 0;
+        padding: 0;
+    }
+    .traffic-widget .inner .traffic-alerts .traffic-alert {
+        /*background: #C17068;*/
+        /*border: 1px solid #B15248;*/
+        /*color: #FFFFFF;*/
+
+        background-color: #EAD0CD;
+        border: 1px solid #D6A09B;
+        color: #AC4136;
+
+        border-radius: 4px;
+        font-family: "Amaranth", Helvetica, sans-serif;
+        letter-spacing: 1px;
+        list-style: none inside none;
+        margin-top: 12px;
+        padding: 5px 10px;
+    }
+    .traffic-widget .inner .traffic-alerts li .alert-label {
+        text-transform: uppercase;
+    }
+    .traffic-widget .inner .traffic-alerts li .alert-text {
+        font-family: "Portland", Georgia, serif;
+    }
+    .traffic-widget .inner .traffic-alerts li .close {
+        cursor: pointer;
+        float: right;
+        font-size: 23px;
+        line-height: 20px;
+    }
+
+    .traffic-widget .inner .freeway-conditions {
+/*        background:
+            /* Shadow covers */
+            linear-gradient(white 30%, rgba(255,255,255,0)),
+            linear-gradient(rgba(255,255,255,0), white 70%) 0 100%,
+
+            /* Shadows */
+            radial-gradient(50% 0, farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)),
+            radial-gradient(50% 100%,farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
+        background:
+            /* Shadow covers */
+            -webkit-linear-gradient(#F8F8F8 30%, rgba(255,255,255,0)),
+            -webkit-linear-gradient(rgba(255,255,255,0), #F8F8F8 70%) 0 100%,
+
+            /* Shadows */
+            -webkit-radial-gradient(50% 0, farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)),
+            -webkit-radial-gradient(50% 100%, farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
+        background-repeat: no-repeat;
+        background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+
+        background-attachment: local, local, scroll, scroll;*/
+
+        border-right: 1px solid #CCCCCC;
+        float: left;
+        height: 300px;
+        margin-bottom: 5px;
+        margin-top: 0;
+        overflow: scroll;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        position: relative;
+        width: 210px;
+    }
+    .traffic-widget .inner .freeway-conditions .conditions-label {
+        background: #eeeeee;
+        background: -moz-linear-gradient(top,  #eeeeee 0%, #dddddd 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eeeeee), color-stop(100%,#dddddd));
+        background: -webkit-linear-gradient(top,  #eeeeee 0%,#dddddd 100%);
+        background: -o-linear-gradient(top,  #eeeeee 0%,#dddddd 100%);
+        background: -ms-linear-gradient(top,  #eeeeee 0%,#dddddd 100%);
+        background: linear-gradient(to bottom,  #eeeeee 0%,#dddddd 100%);
+        border: 1px solid #BBB;
+        border-radius: 3px;
+        box-shadow: inset 0px 1px 4px #B0B0B0;
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#dddddd',GradientType=0 );
+        font-family: "Amaranth", Helvetica, sans-serif;
+        font-size: 13px;
+        font-weight: normal;
+        letter-spacing: 1px;
+        padding: 4px 8px;
+        position: absolute;
+        right: 5px;
+        text-transform: uppercase;
+        top: 12px;
+        z-index: 1;
+    }
+    .traffic-widget .inner .freeway-conditions h5 {
+        background: #ececec;
+        background: -moz-linear-gradient(top,  #ececec 0%, #c9c9c9 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ececec), color-stop(100%,#c9c9c9));
+        background: -webkit-linear-gradient(top,  #ececec 0%,#c9c9c9 100%);
+        background: -o-linear-gradient(top,  #ececec 0%,#c9c9c9 100%);
+        background: -ms-linear-gradient(top,  #ececec 0%,#c9c9c9 100%);
+        background: linear-gradient(to bottom,  #ececec 0%,#c9c9c9 100%);
+        border-bottom: 1px solid #D8D8D8;
+        border-top: 1px solid #FBFBFB;
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ececec', endColorstr='#c9c9c9',GradientType=0 );
+        font-family: "Amaranth", Helvetica, sans-serif;
+        font-size: 17px;
+        font-weight: normal;
+        margin: 0;
+        padding: 8px 0 8px 8px;
+        position: relative;
+    }
+    .traffic-widget .inner .freeway-conditions h5 .interstate-two {
+        background-image: url(http://graphics.jsonline.com/jsi_news/apps/traffic/img/interstate_two.png);
+        background-repeat: no-repeat;
+        color: #FFFFFF;
+        display: inline-block;
+        font-size: 16px;
+        height: 25px;
+        letter-spacing: 1px;
+        padding-left: 7px;
+        padding-top: 6px;
+        position: relative;
+        top: 1px;
+        width: 25px;
+    }
+    .traffic-widget .inner .freeway-conditions h5 .interstate-three {
+        background-image: url(http://graphics.jsonline.com/jsi_news/apps/traffic/img/interstate_three.png);
+        background-repeat: no-repeat;
+        color: #FFFFFF;
+        display: inline-block;
+        font-size: 16px;
+        height: 25px;
+        letter-spacing: 1px;
+        padding-left: 4px;
+        padding-top: 6px;
+        position: relative;
+        top: 1px;
+        width: 33px;
+    }
+    .traffic-widget .inner .freeway-conditions h5 .usroute-two {
+        background-image: url(http://graphics.jsonline.com/jsi_news/apps/traffic/img/usroute_two.png);
+        background-repeat: no-repeat;
+        color: #000000;
+        display: inline-block;
+        font-size: 16px;
+        height: 25px;
+        letter-spacing: 1px;
+        padding-left: 7px;
+        padding-top: 6px;
+        position: relative;
+        top: 1px;
+        width: 25px;
+    }
+    .traffic-widget .inner .freeway-conditions h5 .directional {
+        font-variant: small-caps;
+        letter-spacing: 2px;
+        margin-left: 2px;
+    }
+    .traffic-widget .inner .freeway-conditions .table-display {
+        border-bottom: 1px solid #BBBBBB;
+        margin: 0;
+        padding: 0;
+        width: 201px;
+    }
+    .traffic-widget .inner .freeway-conditions .table-display tr {
+        border-top: 1px solid #AAAAAA;
+        margin-bottom: -3px;
+    }
+    .traffic-widget .inner .freeway-conditions .table-display tr + tr {
+        border-top: 1px solid #BBBBBB;
+    }
+    .traffic-widget .inner .freeway-conditions .table-display .route-name {
+        clear: left;
+        color: #555555;
+        font-family: "Amaranth", Helvetica, sans-serif;
+        font-size: 12px;
+        font-weight: normal;
+        line-height: 18px;
+        margin: 0 -4px 0 0;
+        padding: 4px 3px 4px 12px;
+        position: relative;
+        text-transform: uppercase;
+        top: -1px;
+        width: 146px;
+    }
+    .traffic-widget .inner .freeway-conditions .table-display .route-time {
+        font-family: "Amaranth", Helvetica, sans-serif;
+        font-size: 15px;
+        font-weight: normal;
+        line-height: 18px;
+        margin: 0;
+        padding: 3px 12px 3px 1px;
+        text-align: right;
+        width: 30px;
+    }
+    .traffic-widget .inner .freeway-conditions .table-display .route-time .delay {
+        color: #AAAAAA;
+    }
+    .traffic-widget .inner .freeway-conditions .table-display .route-time .delay.has-delay {
+        color: #AC4136;
+    }
+    .traffic-widget .inner .freeway-conditions .table-display .route-time .minutes-label {
+        display: none;
+    }
+
+    .traffic-widget .inner .freeway-map {
+        /* background: #E8E8E8; */
+        background: transparent url(http://www.511wi.gov/web/Images/winterroadstatic.jpg?1363119244841) no-repeat scroll 76% 93%;
+        border: 1px solid #AAAAAA;
+        box-shadow: inset 0px 0px 5px #777777;
+        float: left;
+        height: 300px;
+        margin-bottom: 5px;
+        margin-left: 12px;
+        margin-top: 15px;
+        position: relative;
+        text-align: center;
+        width: 415px;
+    }
+    .traffic-widget .inner .freeway-map h3 {
+        background: #EEEEEE;
+        border: 1px solid #999999;
+        border-width: 0 1px 1px 0;
+        box-shadow: 1px 1px 4px #777777;
+        color: #333333;
+        font-family: Amaranth;
+        font-variant: small-caps;
+        font-weight: normal;
+        left: 0px;
+        margin: 0;
+        opacity: 0.9;
+        padding: 6px 10px;
+        position: absolute;
+        top: 0px;
+    }
+    .traffic-widget .inner .freeway-map ul {
+        background: #EEEEEE;
+        border: 1px solid #888888;
+        border-radius: 3px;
+        bottom: 5px;
+        box-shadow: 1px 1px 9px #777777;
+        left: 5px;
+        margin: 0;
+        opacity: .95;
+        padding: 5px 0 0;
+        position: absolute;
+    }
+    .traffic-widget .inner .freeway-map ul li {
+        height: 22px;
+        list-style: none inside none;
+        margin: 0;
+        padding: 0 10px 5px;
+        text-align: left;
+    }
+    .traffic-widget .inner .freeway-map ul li .swatch {
+        border: 1px solid #111111;
+        display: inline-block;
+        height: 15px;
+        width: 15px;
+    }
+    .traffic-widget .inner .freeway-map ul li .label {
+        color: #444444;
+        display: inline-block;
+        font-family: Amaranth;
+        font-size: 10px;
+        letter-spacing: 1px;
+        line-height: 11px;
+        margin-top: 0px;
+        position: relative;
+        text-transform: uppercase;
+        vertical-align: text-top;
+    }
+    .map-placeholder {
+        color: #777777;
+        /* display: inline-block; */
+        display: none;
+        font-family: "Portland", Georgia, serif;
+        font-size: 60px;
+        line-height: 87px;
+        margin-top: 21px;
+        text-align: center;
+        text-shadow: -1px -1px 1px #333333, 1px 1px 1px #BBBBBB;
+        text-transform: uppercase;
+    }
+    @media (max-width: 320px) {
+        #flash {
+            background: url(http://graphics.jsonline.com/jsi_news/apps/traffic/img/jst-nl-retina.png);
+            height: 460px;
+            position: absolute;
+            top: 0;
+            width: 320px;
+            z-index: 10;
+        }
+    }
+</style>
+
+
+<style type="text/css">
+    body.mobile {
+        background: #F8F8F8;
+        margin: 0;
+        padding: 0;
+    }
+
+    #jst-ad {
+        background-color: #E5E5E5;
+        border-bottom: 1px solid #CCCCCC;
+        padding-bottom: 9px;
+        padding-top: 17px;
+        text-align: center;
+    }
+    .ad-note {
+        color: #777777;
+        font-family: Verdana, Arial, sans-serif;
+        font-size: 9px;
+        font-weight: normal;
+        letter-spacing: 1px;
+        margin-bottom: 3px;
+        margin-top: 0;
+        text-transform: uppercase;
+    }
+
+    .mobile-widget {
+        border: 0 none;
+        margin: 0 0 10px;
+        width: 100%;
+        z-index: -1;
+    }
+
+    .mobile-widget:before,
+    .mobile-widget:after {
+        display: none;
+    }
+
+    .mobile-widget .inner .title-holder h3 {
+        display: block;
+        font-size: 1.9em;
+        letter-spacing: -1px;
+        margin-bottom: 0.2em;
+        text-align: left;
+    }
+    .mobile-widget .inner .title-holder .pull-right {
+        float: none;
+        font-size: 0.6em;
+        margin: 2px 0;
+        width: 100%;
+    }
+    .mobile-widget .inner .title-holder .pull-right p {
+        display: inline-block;
+        float: left;
+        margin-top: 0;
+    }
+    .mobile-widget .inner .title-holder .pull-right p + p {
+        float: right;
+        margin-left: 13px;
+        margin-top: -2px;
+    }
+    .mobile-widget .inner .title-holder .pull-right p #resync {
+        margin-right: 0;
+    }
+    .mobile-widget .inner .title-holder .pull-right p #spinner {
+        right: -3px;
+    }
+
+    .mobile-widget .inner .freeway-conditions {
+        background-color: #ECECEC;
+        border-right: 0 none;
+        border-top: 1px solid #B6B6B6;
+        height: auto;
+        margin-bottom: 34px;
+        margin-top: 0;
+        overflow: auto;
+        width: 100%;
+    }
+    .mobile-widget .inner .freeway-conditions .table-display {
+        background-color: #F2F2F2;
+        border-collapse: collapse;
+        width: 100%;
+    }
+    .mobile-widget .inner .freeway-conditions .table-display tr {
+        position: relative;
+    }
+    .mobile-widget .inner .freeway-conditions .table-display .route-name {
+        width: 75%;
+    }
+    .mobile-widget .inner .freeway-conditions .table-display .route-time {
+        font-variant: small-caps;
+        right: 0;
+        top: 0;
+        width: 25%;
+    }
+    .mobile-widget .inner .freeway-conditions .table-display .route-time .minutes-label {
+        color: #555555;
+        display: inline;
+    }
+    .mobile h1 {
+        background: #064199;
+        border-bottom: 1px solid #042B65;
+        border-top: 1px solid #0A6BFC;
+        box-shadow: 0px 1px 3px #333333;
+        color: #FFFFFF;
+        font-size: 27px;
+        font-weight: normal;
+        padding: 4px 0;
+        position: absolute;
+        text-align: center;
+        text-transform: uppercase;
+        top: -18px;
+        width: 100%;
+    }
+    #traffic-outer {
+        background-color: #ECECEC;
+        box-shadow: -1px 1px 10px #777777;
+        display: none;
+        overflow: scroll;
+        -webkit-transform: translate3d(0,0,0);
+        -webkit-transition: -webkit-transform 300ms;
+        -webkit-overflow-scrolling: touch;
+    }
+    #js-traffic-holder {
+        margin-top: 35px;
+        z-index: -1;
+    }
+    .pull-to-refresh {
+        top: -35px;
+    }
+    .pull-to-refresh > .message > i.spinner {
+        margin-top: 15px;
+    }
+
+    .footer {
+        background-color: #ECECEC;
+        text-align: center;
+    }
+    .footer .source-line {
+        background-color: #ECECEC;
+        color: #777777;
+        font-family: "Amaranth", Helvetica, sans-serif;
+        font-size: 13px;
+        text-shadow: 1px 1px 0 #FFFFFF;
+        text-transform: uppercase;
+        vertical-align: middle;
+    }
+    .footer .pub-line .js {
+        font-size: 16px;
+        font-weight: bold;
+        margin-left: 3px;
+    }
+    .footer .links-line {
+        background-color: #ECECEC;
+        color: #B3B3B3;
+        font-family: "Amaranth", Helvetica, sans-serif;
+        font-size: 13px;
+        letter-spacing: 1px;
+        margin-bottom: 0;
+        text-transform: uppercase;
+    }
+    .footer .links-line a {
+        color: #0A3E80;
+        text-decoration: none;
+    }
+    .footer .links-line a:hover {
+        color: #005580;
+        text-decoration: underline;
+    }
+
+    .scrollable .wrap {
+        padding-bottom: 0;
+    }
+</style>
+<script src="http://${cms.envHost}www.jsonline.com/templates/jso.tracking.js${mDotParam}" type="text/javascript"></script>
+</head>
+<body>
+<script id="widget-mobile" type="text/html">
+    <div class="inner">
+        <div class="updatestamp-holder">
+            <p>&raquo; Updated <span class="update-date">{{ updatedDate }}</span> at <span class="update-time">{{ updatedTime }}</span></p>
+        </div>
+        {{# hasError }}
+        <div class="feed-error-holder">
+            <p>
+                <span class="ss-alert"></span>
+                <span class="alert-message">This data may be out of date. <a class="fancybox" data-fancybox-type="iframe" href="http://graphics.jsonline.com/jsi_news/apps/traffic/error.html?v10">Read more</a></span>
+            </p>
+        </div>
+        {{/ hasError }}
+        <ul class="traffic-alerts">
+            <li class="traffic-alert">
+                <span class="alert-label"><span class="ss-alert"></span> Alert: </span>
+                <span class="alert-text">Lorem ipsum dolor sit amet.</span>
+                <span class="close">&times;</span>
+            </li>
+        </ul>
+        <div class="freeway-conditions">
+            <div class="conditions-label">Time<span style="color: #AC4136;">+delay</span></div>
+            {{> conditions }}
+            <div class="footer">
+                <p class="source-line"><span class="attribution">Data: Wisconsin Dept. of Transportation</span></p>
+                <p class="links-line"><a class="fancybox" data-fancybox-type="iframe" href="http://graphics.jsonline.com/jsi_news/apps/traffic/about.html?v10">About&nbsp;this&nbsp;app</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="mailto:traffic@journalsentinel.com">Contact&nbsp;us</a></p>
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+</script>
+
+
+<script id="conditions" class="partial" type="text/html">
+    {{# travelTimes }}
+        <h5>
+            <span class="{{ type }}-{{# numberToString }}{{ digits }}{{/ numberToString }}">{{ number }}</span>
+            <span class="directional">{{# capfirst }}{{ direction }}{{/ capfirst }}</span>
+        </h5>
+        <table id="{{ type }}-{{ number }}-{{ direction }}" class="table-display">
+        {{# segments }}
+            <tr>
+                <td class="route-name">{{ span }}</td>
+                <td class="route-time"><span class="normal">{{ normal }}</span>{{# renderDelayClass }}{{ delay }}{{/ renderDelayClass }}<span class="minutes-label"> min</span></td>
+            </tr>
+        {{/ segments }}
+        </table>
+    {{/ travelTimes }}
+</script>
+
+
+<script type="text/javascript">
+    // freewayConditions = {"date": "March 6, 2013", "travelTimes": [{"digits": 2, "direction": "east", "segments": [{"current": 6, "delay": 2, "normal": 4, "span": "Moorland&thinsp;&ndash;&thinsp;U.S. 45", "distance": 3.7}, {"current": 7, "delay": 0, "normal": 7, "span": "U.S. 45&thinsp;&ndash;&thinsp;Downtown", "distance": 6.6}, {"current": 19, "delay": 12, "normal": 7, "span": "Downtown&thinsp;&ndash;&thinsp;Layton", "distance": 6.8}, {"current": 7, "delay": 0, "normal": 7, "span": "Layton&thinsp;&ndash;&thinsp;7 Mile", "distance": 7.1}], "type": "interstate", "number": "94"}, {"digits": 2, "direction": "west", "segments": [{"current": 7, "delay": 0, "normal": 7, "span": "7 Mile&thinsp;&ndash;&thinsp;Layton", "distance": 7.1}, {"current": 7, "delay": 0, "normal": 7, "span": "Layton&thinsp;&ndash;&thinsp;National", "distance": 5.0}, {"current": 10, "delay": 3, "normal": 7, "span": "Downtown&thinsp;&ndash;&thinsp;U.S. 45", "distance": 6.2}, {"current": 11, "delay": 0, "normal": 11, "span": "U.S. 45&thinsp;&ndash;&thinsp;Wis 16", "distance": 11.2}], "type": "interstate", "number": "94"}, {"digits": 2, "direction": "south", "segments": [{"current": 14, "delay": 2, "normal": 12, "span": "Brown Deer&thinsp;&ndash;&thinsp;Downtown", "distance": 10.7}, {"current": 11, "delay": 2, "normal": 9, "span": "I-894&thinsp;&ndash;&thinsp;Wis 164", "distance": 10.0}], "type": "interstate", "number": "43"}, {"digits": 2, "direction": "north", "segments": [{"current": 10, "delay": 0, "normal": 10, "span": "Wis 164&thinsp;&ndash;&thinsp;I-894", "distance": 10.2}, {"current": 14, "delay": 3, "normal": 11, "span": "Downtown&thinsp;&ndash;&thinsp;Brown Deer", "distance": 10.8}], "type": "interstate", "number": "43"}, {"digits": 3, "direction": "north", "segments": [{"current": 5, "delay": 0, "normal": 5, "span": "Hale&thinsp;&ndash;&thinsp;Zoo", "distance": 4.6}], "type": "interstate", "number": "894"}, {"digits": 3, "direction": "south", "segments": [{"current": 8, "delay": 2, "normal": 6, "span": "Zoo&thinsp;&ndash;&thinsp;Hale", "distance": 5.1}], "type": "interstate", "number": "894"}, {"digits": 3, "direction": "east", "segments": [{"current": 6, "delay": 0, "normal": 6, "span": "Hale&thinsp;&ndash;&thinsp;Mitchell", "distance": 5.5}], "type": "interstate", "number": "894"}, {"digits": 3, "direction": "west", "segments": [{"current": 7, "delay": 0, "normal": 7, "span": "Mitchell&thinsp;&ndash;&thinsp;Hale", "distance": 6.2}], "type": "interstate", "number": "894"}, {"digits": 2, "direction": "south", "segments": [{"current": 5, "delay": 0, "normal": 5, "span": "County Line&thinsp;&ndash;&thinsp;Good Hope", "distance": 4.7}, {"current": 19, "delay": 9, "normal": 10, "span": "Good Hope&thinsp;&ndash;&thinsp;I-94", "distance": 9.5}], "type": "usroute", "number": "45"}, {"digits": 2, "direction": "north", "segments": [{"current": 10, "delay": 0, "normal": 10, "span": "I-94&thinsp;&ndash;&thinsp;Good Hope", "distance": 9.6}, {"current": 5, "delay": 0, "normal": 5, "span": "Good Hope&thinsp;&ndash;&thinsp;County Line", "distance": 4.7}], "type": "usroute", "number": "45"}], "time": "3:52 p.m."};
+</script>
+
+
+<script type="text/javascript">
+    var spinnerOpts = {
+        lines: 11,
+        length: 1,
+        width: 2,
+        radius: 5,
+        corners: 1,
+        rotate: 0,
+        color: '#000',
+        speed: 0.7,
+        trail: 60,
+        shadow: false,
+        hwaccel: false,
+        className: 'spinner',
+        zIndex: 2e9,
+        top: 'auto',
+        left: 'auto'
+    };
+
+    function loadTravelTimes(data) {
+        //
+    };
+
+
+    var segmentMap = {
+        "ingress": [
+            {
+                "digits": 2,
+                "direction": "east",
+                "segments": [1190, 1220, 1130, 1210],
+                "type": "interstate",
+                "number": "94"
+            },
+            {
+                "digits": 2,
+                "direction": "west",
+                "segments": [1200, 1120, 1060, 1195],
+                "type": "interstate",
+                "number": "94"
+            },
+            {
+                "digits": 2,
+                "direction": "south",
+                "segments": [1150, 1250],
+                "type": "interstate",
+                "number": "43"
+            },
+            {
+                "digits": 2,
+                "direction": "north",
+                "segments": [1260, 1160],
+                "type": "interstate",
+                "number": "43"
+            },
+            {
+                "digits": 3,
+                "direction": "north",
+                "segments": [1110],
+                "type": "interstate",
+                "number": "894"
+            },
+            {
+                "digits": 3,
+                "direction": "south",
+                "segments": [1080],
+                "type": "interstate",
+                "number": "894"
+            },
+            {
+                "digits": 3,
+                "direction": "east",
+                "segments": [1090],
+                "type": "interstate",
+                "number": "894"
+            },
+            {
+                "digits": 3,
+                "direction": "west",
+                "segments": [1100],
+                "type": "interstate",
+                "number": "894"
+            },
+            {
+                "digits": 2,
+                "direction": "south",
+                "segments": [1240, 1180],
+                "type": "usroute",
+                "number": "45"
+            },
+            {
+                "digits": 2,
+                "direction": "north",
+                "segments": [1170, 1230],
+                "type": "usroute",
+                "number": "45"
+            }
+        ],
+        "egress": [
+            {
+                "digits": 2,
+                "direction": "west",
+                "segments": [1200, 1120, 1060, 1195],
+                "type": "interstate",
+                "number": "94"
+            },
+            {
+                "digits": 2,
+                "direction": "east",
+                "segments": [1190, 1220, 1130, 1210],
+                "type": "interstate",
+                "number": "94"
+            },
+            {
+                "digits": 2,
+                "direction": "north",
+                "segments": [1260, 1160],
+                "type": "interstate",
+                "number": "43"
+            },
+            {
+                "digits": 2,
+                "direction": "south",
+                "segments": [1150, 1250],
+                "type": "interstate",
+                "number": "43"
+            },
+            {
+                "digits": 3,
+                "direction": "south",
+                "segments": [1080],
+                "type": "interstate",
+                "number": "894"
+            },
+            {
+                "digits": 3,
+                "direction": "north",
+                "segments": [1110],
+                "type": "interstate",
+                "number": "894"
+            },
+            {
+                "digits": 3,
+                "direction": "west",
+                "segments": [1100],
+                "type": "interstate",
+                "number": "894"
+            },
+            {
+                "digits": 3,
+                "direction": "east",
+                "segments": [1090],
+                "type": "interstate",
+                "number": "894"
+            },
+            {
+                "digits": 2,
+                "direction": "north",
+                "segments": [1170, 1230],
+                "type": "usroute",
+                "number": "45"
+            },
+            {
+                "digits": 2,
+                "direction": "south",
+                "segments": [1240, 1180],
+                "type": "usroute",
+                "number": "45"
+            }
+        ]
+    };
+
+
+    window.TrafficView = Backbone.View.extend({
+        template: "widget",
+        initialize: function(opts) {
+            var self = this;
+
+            if (typeof opts.mode != "undefined") {
+                self.mode = opts.mode;
+                if (opts.mode == 'mobile') {
+                    self.template = self.template + '-mobile';
+                }
+            }
+
+            self.loadTimes();
+        },
+        loadTimes: function(callbackFunction) {
+            var self = this;
+
+            ${D}.ajax({
+                url: "http://traffic.dhb.io/internal/v1/route.jsonp?callback=loadTravelTimes",
+                dataType: 'jsonp',
+                jsonpCallback: 'loadTravelTimes',
+                success: function(data) {
+                    freewayConditions = data;
+                    self.render();
+                    $("#spinner").spin(spinnerOpts);
+                    $("#spinner").hide();
+
+                    if (typeof callbackFunction == "function") {
+                        callbackFunction();
+                    }
+                }
+            });
+        },
+        render: function() {
+            var self = this;
+
+            intermediateRouteHash = {};
+            _.each(freewayConditions.routes, function(route) {
+                intermediateRouteHash[route['dot_id']] = route;
+            });
+
+            var segmentsGenerated = [];
+            _.each(segmentMap[freewayConditions['visible_mode']], function(segment) {
+                var newSegment = {};
+                newSegment['digits'] = segment['digits'];
+                newSegment['direction'] = segment['direction'];
+                newSegment['number'] = segment['number'];
+                newSegment['type'] = segment['type'];
+
+                var routesFormatted = [];
+                _.each(segment.segments, function(routeID) {
+                    var routeRaw = intermediateRouteHash[routeID];
+                    var routeFMT = {};
+
+                    routeFMT['current'] = Math.round(routeRaw['reported_travel_time'] / 60);
+                    routeFMT['delay'] = Math.round(routeRaw['delay'] / 60);
+                    routeFMT['distance'] = routeRaw['distance'];
+                    routeFMT['normal'] = Math.round(routeRaw['nominal_travel_time'] / 60);
+                    routeFMT['slug'] = "";
+                    routeFMT['span'] = routeRaw['mjs_display_name'];
+
+                    routesFormatted.push(routeFMT);
+                });
+                newSegment['segments'] = routesFormatted;
+
+                segmentsGenerated.push(newSegment);
+            });
+
+            var page = {
+                'travelTimes': segmentsGenerated,
+                'updatedDate': freewayConditions['last_updated_date'],
+                'updatedTime': freewayConditions['last_updated_time'],
+                'hasError': freewayConditions['has_error'],
+                capfirst: function() {
+                    return function(val, render) {
+                        return render(val).capitalize();
+                    }
+                },
+                numberToString: function() {
+                    return function(val, render) {
+                        var stringValue;
+
+                        if (render(val) <= 2) {
+                            stringValue = "two";
+                        } else {
+                            stringValue = "three";
+                        }
+
+                        return stringValue;
+                    }
+                },
+                renderDelayClass: function() {
+                    return function(val, render) {
+                        var delay = render(val);
+                        if (delay == 0) {
+                            return '<span class="delay">+' + delay + '</span>';
+                        } else {
+                            return '<span class="delay has-delay">+' + delay + '</span>';
+                        }
+                    }
+                }
+            };
+
+            self.${D}el.html(ich[self.template](page));
+
+            if (self.mode == 'mobile') {
+                $('body').addClass('mobile');
+                self.${D}el.addClass('mobile-widget');
+            }
+
+            $("#resync").unbind().click(function() {
+                $(this).css({opacity: 0});
+                $("#spinner").show();
+                setTimeout(function() {
+                    self.loadTimes(function() {
+                        $("#spinner").hide();
+                        $("#resync").css({opacity: 1});
+                    });
+                }, 500);
+            });
+
+            // $(".traffic-alerts .traffic-alert .close").unbind().click(function() {
+            //     var thisElement = $(this);
+            //     $($(this).parent()).animate({"height": "toggle", "opacity": "toggle"}, "slow", function() {
+            //         $(".traffic-alerts").animate({"height": "toggle", "opacity": "toggle"}, "slow", function() {
+            //             $($(this).parent()).css({"display": "block"});
+            //             console.log($(thisElement.parent()));
+            //         });
+            //     });
+            // });
+
+            $("#js-traffic-holder").pullToRefresh({
+                callback: function() {
+                    var def = ${D}.Deferred();
+
+                    // setTimeout(function() {
+                    //     def.resolve();
+                    // }, 3000);
+
+
+                    setTimeout(function() {
+                        self.loadTimes(function() {
+                            $("#spinner").hide();
+                            $("#resync").css({opacity: 1});
+                            def.resolve();
+                        });
+                    }, 500);
+
+                    return def.promise();
+                },
+                message: {
+                    loading: ''
+                }
+            });
+
+            // setTimeout(function() {
+            //     $(".traffic-alerts").animate({"height": "toggle", "opacity": "toggle"}, "slow");
+            // }, 300);
+
+            return self;
+        }
+    });
+</script>
+
+<div id="loading-screen">
+    <p class="js"><img alt="Journal" src="http://graphics.jsonline.com/jsi_news/apps/traffic/img/loadingscreen_journal.png" /></p>
+    <p class="js"><img alt="Sentinel" src="http://graphics.jsonline.com/jsi_news/apps/traffic/img/loadingscreen_sentinel.png" /></p>
+    <div class="traffic-area">
+        <p class="traffic"><img alt="traffic" src="http://graphics.jsonline.com/jsi_news/apps/traffic/img/loadingscreen_traffic.png" /></p>
+    </div>
+</div>
+<div id="flash"></div>
+<div id="traffic-outer">
+    <h1 id="page-titlebar" style="display: none;"><span id="mjs"><img alt="Milwaukee Journal Sentinel" src="http://graphics.jsonline.com/jsi_news/apps/traffic/img/MJSheader3.png" /></span><span id="actual-title"><img alt="Travel times" src="http://graphics.jsonline.com/jsi_news/apps/traffic/img/title.png" /></span></h1>
+    <div id="js-traffic-holder" class="scrollable">
+        <div id="jst-ad">
+            <div class="ad-note">Advertisement</div>
+		<script src="https://www.googletagservices.com/tag/js/gpt.js"></script>
+		<script>
+ 			googletag.pubads().definePassback( "/29731549/np.mjs/news/traffic", [320, 50]).setTargeting("pos", "above").display();
+		</script>
+        </div>
+        <div id="js-traffic" class="traffic-widget wrap"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var freewayConditions;
+
+    var nav = window.navigator,
+        isIDevice = 'platform' in nav && (/iphone|ipod|ipad/gi).test(nav.platform);
+
+    $("#loading-screen p").fitText(.7);
+
+
+    $(document).ready(function() {
+        var activeMode = 'mobile';
+
+        $("h1").show();
+        $("#flash").fadeOut();
+
+        var qs = {};
+        if (location.href.split('?').length > 1) {
+            location.href.split('?')[1].split('&').forEach(function(i){
+                qs[i.split('=')[0]]=i.split('=')[1];
+            });
+            if (typeof qs.view != "undefined" && qs.view == 'mobile') {
+                activeMode = 'mobile';
+            }
+        }
+
+        traffic = new TrafficView({
+            el: "#js-traffic",
+            mode: activeMode
+        });
+
+        $("#loading-screen").fadeOut(600);
+
+        $("#traffic-outer").show();
+
+        setTimeout(function() {
+            if (!isIDevice) {
+                $("body").css({height: $("#js-traffic").height()});
+            }
+            
+        }, 500);
+
+        $(".fancybox").fancybox({
+            closeMethod: 'dropOut',
+            closeSpeed: 150,
+            maxWidth: 600,
+            openMethod: 'dropIn',
+            openSpeed: 450,
+            width: '100%'
+        })
+    });
+</script>
+</body>
+</html>
