@@ -1,0 +1,203 @@
+<script id="widgetMobile" type="text/html">
+    <div class="inner">
+        <div class="title-holder">
+            <h3>Milwaukee Travel Times</h3>
+            <div class="pull-right">
+                <p>Live conditions</p>
+                <p>Updated <span class="update-date">{{ updatedDate }}</span> at <span class="update-time">{{ updatedTime }}</span>
+                    <span id="resync" class="ss-sync"></span><span id="spinner"></span>
+                </p>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+        <ul id="traffic-alerts" class="traffic-alerts">
+            {{> alerts }}
+        </ul>
+        <div class="freeway-conditions">
+            <div class="conditions-label">Time<span style="color: #AC4136;">+delay</span></div>
+            {{> conditions }}
+        </div>
+        <div class="freeway-map" style="display: none;">
+            <h3>Winter road conditions</h3>
+            <span class="map-placeholder">Map<br>goes<br>here.</span>
+            <ul class="key">
+                <li>
+                    <div class="swatch" style="background-color: #34CC02;"></div>
+                    <div class="label">Clear roads</div>
+                </li>
+                <li>
+                    <div class="swatch" style="background-color: #D176A2;"></div>
+                    <div class="label">Slippery</div>
+                </li>
+                <li>
+                    <div class="swatch" style="background-color: #5DAFE9;"></div>
+                    <div class="label">Snow</div>
+                </li>
+                <li>
+                    <div class="swatch" style="background-color: #FF0000;"></div>
+                    <div class="label">Ice</div>
+                </li>
+                <li>
+                    <div class="swatch" style="background-color: #000000;"></div>
+                    <div class="label">Do not travel</div>
+                </li>
+                <li>
+                    <div class="swatch" style="background-color: #999999;"></div>
+                    <div class="label">Not available</div>
+                </li>
+            </ul>
+        </div>
+        <div class="widget-footer">
+            <span class="attribution">Data: <a href="http://511wi.gov">Wisconsin Dept. of Transportation</a></span>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+</script>
+
+
+<script id="widget" type="text/html">
+    <div class="inner">
+        <div class="title-holder">
+            <h3>Milwaukee area traffic</h3>
+            <div class="pull-right">
+                <p>Live road conditions <span id="resync" class="ss-sync"></span><span id="spinner"></span></p>
+                <p>Last updated <span class="update-date">{{ updatedDate }}</span> at <span class="update-time">{{ updatedTime }}</span></p>
+            </div>
+        </div>
+        <ul class="traffic-alerts">
+            {{> alerts }}
+        </ul>
+        <div class="freeway-conditions">
+            <div class="conditions-label">Time<span style="color: #AC4136;">+delay</span></div>
+            {{> conditions }}
+        </div>
+        <div class="freeway-map">
+            <h3>Winter road conditions</h3>
+            <span class="map-placeholder">Map<br>goes<br>here.</span>
+            <ul class="key">
+                <li>
+                    <div class="swatch" style="background-color: #34CC02;"></div>
+                    <div class="label">Clear roads</div>
+                </li>
+                <li>
+                    <div class="swatch" style="background-color: #D176A2;"></div>
+                    <div class="label">Slippery</div>
+                </li>
+                <li>
+                    <div class="swatch" style="background-color: #5DAFE9;"></div>
+                    <div class="label">Snow</div>
+                </li>
+                <li>
+                    <div class="swatch" style="background-color: #FF0000;"></div>
+                    <div class="label">Ice</div>
+                </li>
+                <li>
+                    <div class="swatch" style="background-color: #000000;"></div>
+                    <div class="label">Do not travel</div>
+                </li>
+                <li>
+                    <div class="swatch" style="background-color: #999999;"></div>
+                    <div class="label">Not available</div>
+                </li>
+            </ul>
+        </div>
+        <div class="widget-footer">
+            <span class="branding"><a href="http://jsonline.com"><img src="http://graphics.jsonline.com/jsi_news/img/jsonline_20px_firstgo.png" alt="JSOnline" /></a></span>
+            <span class="attribution">Data: <a href="http://511wi.gov">Wisconsin Department of Transportation</a></span>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+</script>
+
+
+<script id="alerts" class="partial" type="text/html">
+    {{# alertList }}
+        <li class="traffic-alert">
+            <span class="alert-label"><span class="ss-alert"></span> Alert &mdash; {{ county }} county: </span>
+            <span class="alert-text">&#8220;{{# capfirst }}{{ text }}{{/ capfirst }}&#8221;</span>
+            <span class="close">&times;</span>
+        </li>
+    {{/ alertList }}
+</script>
+
+
+<script id="conditions" class="partial" type="text/html">
+    {{# travelTimes }}
+        <h5>
+            <span class="{{ type }}-{{# numberToString }}{{ digits }}{{/ numberToString }}">{{ number }}</span>
+            <span class="directional">{{# capfirst }}{{ direction }}{{/ capfirst }}</span>
+        </h5>
+        <table id="{{ type }}-{{ number }}-{{ direction }}" class="table-display">
+        {{# segments }}
+            <tr>
+                <td class="route-name">{{ span }}</td>
+                <td class="route-time"><span class="normal">{{ normal }}</span>{{# renderDelayClass }}{{ delay }}{{/ renderDelayClass }}<span class="minutes-label"> min</span></td>
+            </tr>
+        {{/ segments }}
+        </table>
+    {{/ travelTimes }}
+</script>
+
+
+<style type="text/css">
+    .scrollable {
+        margin-top: 18px;
+    }
+</style>
+
+
+<script src="http://graphics.jsonline.com/jsi_news/javascripts/templating/ich.min.js" type="text/javascript"></script>
+
+
+<script src="http://graphics.jsonline.com/jsi_news/javascripts/backbone/underscore.js" type="text/javascript"> </script>
+<script src="http://graphics.jsonline.com/jsi_news/javascripts/backbone/backbone.min.js" type="text/javascript"> </script>
+<script src="http://graphics.jsonline.com/jsi_news/javascripts/backbone/backbone-query.min.js" type="text/javascript"> </script>
+
+
+<script src="http://graphics.jsonline.com/jsi_news/javascripts/helpers/datalab.helpers.js?v2" type="text/javascript"> </script>
+
+
+<link href="http://graphics.jsonline.com/jsi_news/webfonts/amaranth/amaranth.css" rel="stylesheet" />
+<link href="http://graphics.jsonline.com/jsi_news/webfonts/portland/portland.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="http://graphics.jsonline.com/jsi_news/webfonts/symbolset-social/ss-social.css">
+<link rel="stylesheet" type="text/css" href="http://graphics.jsonline.com/jsi_news/webfonts/symbolset/symbolset.std.css">
+<script src="http://graphics.jsonline.com/jsi_news/webfonts/symbolset/ss-standard.js" type="text/javascript"></script>
+
+
+<script src="http://graphics.jsonline.com/jsi_news/javascripts/spin/spin.min.js" type="text/javascript"></script>
+<script src="http://graphics.jsonline.com/jsi_news/javascripts/spin/jquery.spin.js" type="text/javascript"></script>
+
+<script src="http://graphics.jsonline.com/jsi_news/dev/toe.js" type="text/javascript"></script>
+
+
+<script src="http://graphics.jsonline.com/jsi_news/apps/traffic/javascripts/widget.js?v5" type="text/javascript"> </script>
+<link href="http://graphics.jsonline.com/jsi_news/apps/traffic/stylesheets/widget-storypage.css?v2" rel="stylesheet" type="text/css" />
+
+
+<!--[if lte IE 8]>
+    <style type="text/css">
+        .mobile-widget .inner .freeway-conditions .table-display .route-time {
+            position: relative;
+        }
+    </style>
+<![endif]-->
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        var activeMode = 'mobile';
+
+        ich.grabTemplates();
+
+        traffic = new TrafficView({
+            el: "#js-traffic",
+            mode: activeMode
+        });
+    });
+</script>
+
+<div class="scrollable">
+    <div class="wrap">
+        <div id="js-traffic" class="traffic-widget"></div>
+    </div>
+</div>
